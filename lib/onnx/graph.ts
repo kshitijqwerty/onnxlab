@@ -74,9 +74,11 @@ export function buildGraph(graph: any) {
         y: 0
       },
       data: {
-        label: node.opType
-      },
-      type: 'default'
+        label: node.opType,
+        inputs: node.input?.length || 0,
+        outputs: node.output?.length || 0
+        },
+      type: 'operator'
     })
 
     // Register outputs
