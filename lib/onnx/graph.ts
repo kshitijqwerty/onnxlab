@@ -75,9 +75,11 @@ export function buildGraph(graph: any) {
       },
       data: {
         label: node.opType,
-        inputs: node.input?.length || 0,
-        outputs: node.output?.length || 0
-        },
+        inputs: node.input || [],
+        outputs: node.output || [],
+        attributes: node.attribute || [],
+        originalNode: node
+      },
       type: 'operator'
     })
 

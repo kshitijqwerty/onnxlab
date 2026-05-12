@@ -5,8 +5,10 @@ import { Handle, Position } from 'reactflow'
 interface Props {
   data: {
     label: string
-    inputs?: number
-    outputs?: number
+    inputs?: string[]
+    outputs?: string[]
+    attributes?: any[]
+    originalNode?: any
   }
 }
 
@@ -68,11 +70,11 @@ export default function OperatorNode({
         <div className="mt-2 text-sm opacity-90">
 
           <div>
-            Inputs: {data.inputs || 0}
+            Inputs: {data.inputs?.length || 0}
           </div>
 
           <div>
-            Outputs: {data.outputs || 0}
+            Outputs: {data.outputs?.length || 0}
           </div>
 
         </div>
