@@ -1,113 +1,122 @@
-'use client'
+"use client";
 
 interface Props {
-  node: any
+  node: any;
 }
 
-export default function NodeInspector({
-  node
-}: Props) {
-
+export default function NodeInspector({ node }: Props) {
   if (!node) {
     return (
-      <div className="w-[350px] border-l bg-white p-6">
-        <p className="text-gray-500">
-          Select a node
-        </p>
+      <div
+        className="
+        flex
+        w-[380px]
+        items-center
+        justify-center
+        border-l
+        border-white/10
+        bg-[#111827]
+        text-gray-500
+      "
+      >
+        Select an operator node
       </div>
-    )
+    );
   }
 
-  const data = node.data
+  const data = node.data;
 
   return (
-    <div className="w-[350px] overflow-y-auto border-l bg-white p-6">
+    <div
+      className="
+      w-[380px]
+      overflow-y-auto
+      border-l
+      border-white/10
+      bg-[#111827]
+      p-6
+      text-white
+    "
+    >
+      {/* Header */}
+      <div
+        className="
+        mb-6
+        rounded-2xl
+        border
+        border-white/10
+        bg-black/30
+        p-5
+      "
+      >
+        <div className="mb-2 text-sm text-gray-400">Operator</div>
 
-      <h2 className="mb-6 text-2xl font-bold">
-        {data.label}
-      </h2>
+        <h2 className="text-3xl font-bold">{data.label}</h2>
+      </div>
 
       {/* Inputs */}
-      <div className="mb-6">
-
-        <h3 className="mb-2 text-lg font-semibold">
-          Inputs
-        </h3>
+      <div
+        className="
+        mb-6
+        rounded-2xl
+        border
+        border-white/10
+        bg-black/20
+        p-5
+      "
+      >
+        <h3 className="mb-4 text-lg font-semibold">Inputs</h3>
 
         <div className="space-y-2">
-
-          {data.inputs?.map(
-            (input: string, index: number) => (
-              <div
-                key={index}
-                className="rounded-lg bg-gray-100 p-2 text-sm"
-              >
-                {input}
-              </div>
-            )
-          )}
-
+          {data.inputs?.map((input: string, index: number) => (
+            <div
+              key={index}
+              className="
+                  rounded-lg
+                  bg-black
+                  p-3
+                  font-mono
+                  text-sm
+                  text-green-400
+                "
+            >
+              {input}
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Outputs */}
-      <div className="mb-6">
-
-        <h3 className="mb-2 text-lg font-semibold">
-          Outputs
-        </h3>
-
-        <div className="space-y-2">
-
-          {data.outputs?.map(
-            (output: string, index: number) => (
-              <div
-                key={index}
-                className="rounded-lg bg-gray-100 p-2 text-sm"
-              >
-                {output}
-              </div>
-            )
-          )}
-
-        </div>
-      </div>
-
-      {/* Attributes */}
-      <div>
-
-        <h3 className="mb-2 text-lg font-semibold">
-          Attributes
-        </h3>
+      <div
+        className="
+        mb-6
+        rounded-2xl
+        border
+        border-white/10
+        bg-black/20
+        p-5
+      "
+      >
+        <h3 className="mb-4 text-lg font-semibold">Outputs</h3>
 
         <div className="space-y-2">
-
-          {data.attributes?.length > 0 ? (
-            data.attributes.map(
-              (attr: any, index: number) => (
-                <div
-                  key={index}
-                  className="rounded-lg bg-gray-100 p-2 text-sm"
-                >
-                  <div className="font-medium">
-                    {attr.name}
-                  </div>
-
-                  <div className="text-gray-600">
-                    {JSON.stringify(attr)}
-                  </div>
-                </div>
-              )
-            )
-          ) : (
-            <p className="text-sm text-gray-500">
-              No attributes
-            </p>
-          )}
-
+          {data.outputs?.map((output: string, index: number) => (
+            <div
+              key={index}
+              className="
+                  rounded-lg
+                  bg-black
+                  p-3
+                  font-mono
+                  text-sm
+                  text-blue-400
+                "
+            >
+              {output}
+            </div>
+          ))}
         </div>
       </div>
-
     </div>
-  )
+  );
 }
