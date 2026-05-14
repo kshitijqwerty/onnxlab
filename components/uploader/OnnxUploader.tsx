@@ -1,10 +1,13 @@
 "use client";
 
+import * as ort from "onnxruntime-web";
 import { useState } from "react";
 import { parseOnnxModel } from "@/lib/onnx/parser";
 import { buildGraph } from "@/lib/onnx/graph";
 import ModelGraph from "@/components/graph/ModelGraph";
 import { parseGraph } from "@/lib/onnx/graphParser";
+import { createSession } from "@/lib/onnx/inference";
+import InputPanel from "@/components/inference/InputPanel";
 
 export default function OnnxUploader() {
   const [fileName, setFileName] = useState<string>("");
@@ -12,6 +15,7 @@ export default function OnnxUploader() {
   const [loading, setLoading] = useState(false);
   const [modelInfo, setModelInfo] = useState<any>(null);
   const [graph, setGraph] = useState<any>(null);
+  const [session, setSession] = useState<ort.InferenceSession | null>(null);
 
   async function handleFile(file: File) {
     setError("");
@@ -26,6 +30,11 @@ export default function OnnxUploader() {
 
       // Read file as ArrayBuffer
       const arrayBuffer = await file.arrayBuffer();
+
+      const runtimeSession = await createSession(arrayBuffer);
+
+      setSession(runtimeSession);
+      console.log(runtimeSession);
 
       console.log("ONNX File Loaded");
       console.log("Filename:", file.name);
@@ -214,6 +223,7 @@ export default function OnnxUploader() {
 
           {/* Graph */}
           {graph && <ModelGraph nodes={graph.nodes} edges={graph.edges} />}
+          {session && <InputPanel session={session} />}
         </div>
       </div>
     </div>
