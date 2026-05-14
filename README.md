@@ -1,36 +1,134 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ONNXLab
+
+A browser-native ONNX model visualization and inference platform built with Next.js, React Flow, and ONNX Runtime Web.
+
+---
+
+## Features
+
+### Interactive Graph Visualization
+
+- Upload `.onnx` models directly in the browser
+- Interactive, movable node graph with top-to-bottom layout
+- Netron-inspired node inspector
+- Tensor shape and type annotations on nodes
+- Node attribute inspection
+- Input/output tensor connections
+
+### Runtime Model Parsing
+
+ONNXLab parses models dynamically at runtime, extracting model inputs/outputs, tensor shapes and types, node attributes, and full graph structure.
+
+### Dynamic Input System
+
+Input UI is automatically generated from model metadata. Supports image tensors, vector tensors, and generic tensors — with automatic detection of dimensions, data types, and shape structure.
+
+### Image Inference Pipeline
+
+- Upload an image directly in the browser
+- Automatic image → tensor conversion with dynamic resizing based on model input shape
+- Fully client-side inference — no backend required
+
+### Tensor Analysis
+
+Automatically analyzes output tensors and displays type, shape, total values, min/max, and mean. Supports generic ONNX outputs.
+
+### Prediction Viewer
+
+Top-K prediction extraction with human-readable labels and raw tensor visualization. Upload an optional `labels.json` to map tensor indices to class names:
+
+```json
+["cat", "dog", "car", "person"]
+```
+
+Works with ImageNet, CIFAR, and any custom classification dataset.
+
+---
+
+## Tech Stack
+
+| Layer | Libraries |
+|---|---|
+| Frontend | Next.js, React, TypeScript, TailwindCSS |
+| Graph | React Flow, Dagre |
+| ML Runtime | ONNX Runtime Web, WebAssembly, WebGPU |
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+git clone https://github.com/yourusername/onnxlab.git
+cd onnxlab
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Upload** any `.onnx` model file
+2. **Explore** the graph — inspect nodes, view tensor metadata, analyze shapes
+3. **Run inference** — upload an input image, optionally upload a `labels.json`, and run inference directly in the browser
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## WebGPU / WASM Execution
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+ONNXLab uses both WebGPU and WebAssembly execution providers:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```ts
+executionProviders: ['webgpu', 'wasm']
+```
 
-## Deploy on Vercel
+It automatically uses GPU acceleration when available and falls back to WASM on unsupported devices.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Supported Models
+
+ResNet, MobileNet, YOLO, ViT, BERT, segmentation models, classification models, and any custom ONNX model.
+
+---
+
+## Project Structure
+
+```
+src/
+├── app/
+├── components/
+│   ├── graph/
+│   ├── inference/
+│   ├── inspector/
+│   └── uploader/
+└── lib/
+    └── onnx/
+        ├── analyzeTensor.ts
+        ├── checkWebGpu.ts
+        ├── imageTensor.ts
+        ├── inputType.ts
+        ├── parseOutputs.ts
+        ├── parser.ts
+        ├── runInference.ts
+        ├── softmax.ts
+        └── topK.ts
+```
+
+---
+
+## Roadmap
+
+- Tensor heatmaps and embedding visualization
+- YOLO bounding boxes and segmentation overlays
+- Audio model support
+- Performance benchmarking and tensor profiling
+- Multi-model comparison
+- Saved sessions and drag-and-drop workflow
+- Cloud model hosting
+
+---
+
+## License
+
+MIT
