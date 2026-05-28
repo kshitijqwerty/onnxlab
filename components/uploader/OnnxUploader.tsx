@@ -245,45 +245,47 @@ export default function OnnxUploader() {
 
           {/* Tab Content */}
           {activeTab === "overview" && modelInfo && (
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-white backdrop-blur-xl">
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-xl font-bold">Model Information</h3>
-                <span className="text-xs text-gray-500">{formatSize(fileSize)}</span>
+            <div className="space-y-4">
+              {/* Summary bar */}
+              <div className="flex flex-wrap items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4">
+                <span className="rounded-lg bg-white/5 px-3 py-1 font-mono text-sm text-cyan-300">{fileName}</span>
+                <span className="text-xs text-gray-600">{formatSize(fileSize)}</span>
+                <span className="ml-auto text-xs text-gray-500">
+                  {modelInfo.inputs.length} input{modelInfo.inputs.length !== 1 ? "s" : ""} &middot;{" "}
+                  {modelInfo.outputs.length} output{modelInfo.outputs.length !== 1 ? "s" : ""}
+                </span>
               </div>
 
-              <div className="mb-2 flex items-center gap-2 text-sm text-gray-400">
-                <span className="rounded-md bg-white/5 px-2 py-0.5 font-mono text-xs">{fileName}</span>
-                <span className="text-gray-600">·</span>
-                <span>{modelInfo.inputs.length} input{modelInfo.inputs.length !== 1 ? "s" : ""}</span>
-                <span className="text-gray-600">·</span>
-                <span>{modelInfo.outputs.length} output{modelInfo.outputs.length !== 1 ? "s" : ""}</span>
-              </div>
-
+              {/* Inputs / Outputs */}
               <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-green-400">Inputs</h4>
-                  <div className="space-y-2">
+                <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+                  <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-green-400">
+                    Inputs ({modelInfo.inputs.length})
+                  </h4>
+                  <div className="space-y-1.5">
                     {modelInfo.inputs.map((input: ParsedInput) => (
-                      <div key={input.name} className="rounded-xl bg-black/20 p-3 text-xs">
-                        <div className="mb-1 font-mono text-green-300">{input.name}</div>
-                        <div className="flex gap-3 text-gray-400">
+                      <div key={input.name} className="rounded-xl bg-black/30 px-3 py-2.5 text-xs">
+                        <div className="mb-0.5 font-mono text-green-300">{input.name}</div>
+                        <div className="flex gap-3 text-gray-500">
                           <span>{input.type}</span>
-                          <span>[{input.dimensions?.join(", ")}]</span>
+                          <span>[{input.dimensions?.join(", ") || "?"}]</span>
                         </div>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                <div>
-                  <h4 className="mb-2 text-xs font-semibold uppercase tracking-wider text-blue-400">Outputs</h4>
-                  <div className="space-y-2">
+                <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-5">
+                  <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-400">
+                    Outputs ({modelInfo.outputs.length})
+                  </h4>
+                  <div className="space-y-1.5">
                     {modelInfo.outputs.map((output: ParsedInput) => (
-                      <div key={output.name} className="rounded-xl bg-black/20 p-3 text-xs">
-                        <div className="mb-1 font-mono text-blue-300">{output.name}</div>
-                        <div className="flex gap-3 text-gray-400">
+                      <div key={output.name} className="rounded-xl bg-black/30 px-3 py-2.5 text-xs">
+                        <div className="mb-0.5 font-mono text-blue-300">{output.name}</div>
+                        <div className="flex gap-3 text-gray-500">
                           <span>{output.type}</span>
-                          <span>[{output.dimensions?.join(", ")}]</span>
+                          <span>[{output.dimensions?.join(", ") || "?"}]</span>
                         </div>
                       </div>
                     ))}

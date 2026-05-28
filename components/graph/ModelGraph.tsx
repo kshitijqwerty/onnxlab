@@ -54,16 +54,6 @@ export default function ModelGraph({
 
   return (
     <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#111827] shadow-2xl">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-white/10 bg-black/20 px-6 py-4">
-        <div>
-          <h2 className="text-xl font-bold text-white">Computational Graph</h2>
-          <p className="text-sm text-gray-400">
-            {initialNodes.length} nodes &middot; {initialEdges.length} edges
-          </p>
-        </div>
-      </div>
-
       <div className="flex h-[800px]">
         {/* Graph */}
         <div className="relative flex-1 bg-[#0B1020]">
