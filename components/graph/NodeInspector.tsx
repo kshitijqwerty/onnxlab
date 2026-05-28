@@ -8,13 +8,21 @@ interface Props {
   node: Node<OperatorNodeData> | null;
 }
 
+function toNumber(v: unknown): number {
+  if (typeof v === "number") return v;
+  if (v && typeof v === "object" && "low" in v) {
+    return (v as { low: number }).low;
+  }
+  return Number(v);
+}
+
 function normalizeValue(value: unknown): unknown {
   if (
     typeof value === "object" &&
     value !== null &&
     "low" in value
   ) {
-    return (value as { low: unknown }).low;
+    return toNumber(value);
   }
   return value;
 }
@@ -233,7 +241,7 @@ export default function NodeInspector({ node }: Props) {
                 Shape:{" "}
                 {input.tensor?.shape
                   ? `[${input.tensor.shape.join(", ")}]`
-                  : "unavailable"}
+                  : "?"}
               </div>
             </div>
           ))}
@@ -301,7 +309,7 @@ export default function NodeInspector({ node }: Props) {
                 Shape:{" "}
                 {output.tensor?.shape
                   ? `[${output.tensor.shape.join(", ")}]`
-                  : "unavailable"}
+                  : "?"}
               </div>
             </div>
           ))}

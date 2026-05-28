@@ -113,7 +113,7 @@ export default function OperatorNode({ data }: Props) {
           >
             {output.tensor?.shape
               ? `[${output.tensor.shape.join(", ")}]`
-              : "shape unavailable"}
+              : "?"}
           </div>
         ))}
       </div>
