@@ -36,7 +36,11 @@ export default function InputPanel({ session }: Props) {
   const [running, setRunning] = useState(false);
   const [labels, setLabels] = useState<string[]>([]);
   const [inferenceError, setInferenceError] = useState<string>("");
+  const [imageUrl, setImageUrl] = useState<string>("");
+  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
   const imageInputRef = useRef<HTMLInputElement>(null);
+
+  const prevUrlRef = useRef("");
 
   if (!session) {
     return null;
@@ -49,6 +53,22 @@ export default function InputPanel({ session }: Props) {
       const shape = meta.shape ?? [];
       const height = Number(shape[2]) || 224;
       const width = Number(shape[3]) || 224;
+
+      // Revoke previous URL
+      if (prevUrlRef.current) URL.revokeObjectURL(prevUrlRef.current);
+
+      const url = URL.createObjectURL(file);
+      prevUrlRef.current = url;
+      setImageUrl(url);
+
+      // Get original image dimensions
+      const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+        const el = new Image();
+        el.onload = () => resolve(el);
+        el.onerror = () => reject(new Error("Failed to load image"));
+        el.src = url;
+      });
+      setImageSize({ width: img.naturalWidth, height: img.naturalHeight });
 
       const tensor = await imageToTensor(file, width, height);
       const results = await runInference(session, meta.name, tensor);
@@ -193,6 +213,9 @@ export default function InputPanel({ session }: Props) {
         <OutputViewer
           outputs={outputs}
           labels={labels}
+          imageUrl={imageUrl}
+          imageWidth={imageSize.width}
+          imageHeight={imageSize.height}
           inputName={session.inputMetadata?.[0]?.name}
           inputShape={session.inputMetadata?.[0]?.shape}
         />

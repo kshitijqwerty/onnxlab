@@ -44,6 +44,16 @@ export interface OutputTensor {
   data: NumericArray;
 }
 
+export interface Detection {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  confidence: number;
+  classId: number;
+  className?: string;
+}
+
 export interface TensorAnalysis {
   total: number;
   min: number;
